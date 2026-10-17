@@ -1,0 +1,276 @@
+<!doctype html>
+<html lang="en" data-theme="default" data-size="normal" data-motion="auto">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>FairWeb AI – Find and fix accessibility problems in your website</title>
+  <meta name="description" content="Paste your page's HTML and FairWeb AI checks contrast, image descriptions, form labels and keyboard access, explains each problem in plain language, and gives you a report with fixes.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Atkinson+Hyperlegible:ital,wght@0,400;0,700;1,400&amp;display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="css/styles.css">
+</head>
+<body id="top">
+  <a class="skip" href="#main">Skip to main content</a>
+
+  <header class="site-header">
+    <div class="wrap bar">
+      <a class="brand" href="#top"><span class="mark" aria-hidden="true"></span>FairWeb AI</a>
+
+      <nav aria-label="Primary">
+        <ul class="nav-list">
+          <li><a href="#analyzer">Page checker</a></li>
+          <li><a href="#contrast">Contrast lab</a></li>
+          <li><a href="#learn">Learn</a></li>
+          <li><a href="#about">About</a></li>
+        </ul>
+      </nav>
+
+      <details class="prefs">
+        <summary>Display options</summary>
+        <div class="panel" role="group" aria-label="Display options">
+          <button type="button" class="btn" id="pref-contrast" aria-pressed="false">High contrast</button>
+          <button type="button" class="btn" id="pref-size" aria-pressed="false">Larger text</button>
+          <button type="button" class="btn" id="pref-motion" aria-pressed="false">Reduce motion</button>
+        </div>
+      </details>
+    </div>
+  </header>
+
+  <main id="main">
+    <!-- HERO -->
+    <section class="hero" aria-labelledby="hero-title">
+      <div class="wrap hero-grid">
+        <div class="hero-copy">
+          <h1 id="hero-title">Find what blocks people. Fix it in minutes.</h1>
+          <p class="lede">Paste your page’s HTML. FairWeb AI checks text contrast, image descriptions, form labels and keyboard access, explains every problem in plain language, and hands you a report with fixes you can copy.</p>
+          <div class="cta-row">
+            <a class="btn btn-primary" href="#analyzer">Check my page</a>
+            <button type="button" class="btn" id="hero-sample">Try a broken sample page</button>
+          </div>
+          <p class="fineprint">Runs entirely in your browser. Your code is never uploaded.</p>
+        </div>
+
+        <figure class="mock-wrap">
+          <div class="mock" aria-hidden="true">
+            <div class="mock-bar">greenbasket.example/signup</div>
+            <div class="mock-body">
+              <div class="mock-row">
+                <div class="mock-img flag" style="--i:0"></div>
+                <span class="tag">No alt text</span>
+              </div>
+              <div class="mock-row">
+                <p class="mock-faint flag" style="--i:1">Order before 9am for same-day delivery</p>
+                <span class="tag">Contrast 2.4 : 1</span>
+              </div>
+              <div class="mock-row">
+                <div class="mock-input flag" style="--i:2">name@example.com</div>
+                <span class="tag">No label</span>
+              </div>
+              <div class="mock-row">
+                <div class="mock-btn flag" style="--i:3">Sign up</div>
+                <span class="tag">Tab key skips it</span>
+              </div>
+            </div>
+          </div>
+          <figcaption>Four problems FairWeb AI would flag on a sign-up card.</figcaption>
+        </figure>
+      </div>
+    </section>
+
+    <section class="facts-band" aria-label="Why accessibility matters">
+      <ul class="wrap facts">
+        <li><strong>1 in 6</strong> people worldwide lives with a significant disability (World Health Organization).</li>
+        <li><strong>About 95%</strong> of the top million home pages had detectable failures in WebAIM’s annual survey. Low-contrast text was the most common.</li>
+        <li><strong>Most fixes</strong> are small: a missing attribute, a darker color, a real button instead of a div.</li>
+      </ul>
+    </section>
+
+    <!-- ANALYZER -->
+    <section id="analyzer" class="section" aria-labelledby="analyzer-title">
+      <div class="wrap narrow">
+        <h2 id="analyzer-title">Check a page</h2>
+        <p class="lede">Paste the HTML of a page or component, or upload an .html file. To check a live site, open it, view the page source, and copy everything.</p>
+
+        <label for="html-input" class="field-label">Page HTML</label>
+        <textarea id="html-input" rows="12" spellcheck="false" autocomplete="off" aria-describedby="input-help input-error" placeholder="<!DOCTYPE html>&#10;<html>…"></textarea>
+        <p id="input-help" class="help">Full pages get page-level checks too (language, title, zoom). Snippets are checked as a fragment.</p>
+        <p id="input-error" class="error" role="alert" hidden></p>
+
+        <div class="toolbar">
+          <button type="button" class="btn btn-primary" id="run-check">Check accessibility</button>
+          <button type="button" class="btn" id="load-sample">Load sample page</button>
+          <label class="btn file-btn" for="file-input">Upload .html file</label>
+          <input type="file" id="file-input" accept=".html,.htm,text/html" class="sr-only" tabindex="-1">
+          <button type="button" class="btn btn-quiet" id="clear-input">Clear</button>
+        </div>
+        <p id="status" class="sr-only" role="status" aria-live="polite"></p>
+      </div>
+
+      <!-- RESULTS -->
+      <div class="wrap" id="results-wrap">
+        <section id="results" tabindex="-1" aria-labelledby="results-title" hidden>
+          <h2 id="results-title">Your accessibility report</h2>
+
+          <div class="summary">
+            <div class="score" aria-hidden="true">
+              <svg viewBox="0 0 120 120" class="score-svg" focusable="false">
+                <circle cx="60" cy="60" r="52" class="score-track"></circle>
+                <circle cx="60" cy="60" r="52" class="score-bar" id="score-bar"></circle>
+              </svg>
+              <span class="score-num" id="score-num">0</span>
+            </div>
+            <div class="summary-text">
+              <p class="grade" id="grade"></p>
+              <p id="summary-line"></p>
+              <ul class="sev-counts" id="sev-counts" aria-label="Problems by severity"></ul>
+            </div>
+          </div>
+
+          <h3 class="sub">What we checked</h3>
+          <ul class="cats" id="cats"></ul>
+
+          <div class="notes" id="notes"></div>
+
+          <div class="issues-head">
+            <h3 class="sub" id="issues-title">Problems to fix</h3>
+            <div class="filter" role="group" aria-label="Filter problems by type" id="filters"></div>
+          </div>
+          <div class="expand-row">
+            <button type="button" class="btn btn-quiet" id="expand-all">Expand all</button>
+            <button type="button" class="btn btn-quiet" id="collapse-all">Collapse all</button>
+          </div>
+          <ul class="issues" id="issues"></ul>
+
+          <div id="passed-wrap">
+            <h3 class="sub">What’s already working</h3>
+            <ul class="passed" id="passed"></ul>
+          </div>
+
+          <div class="actions">
+            <h3 class="sub">Take the report with you</h3>
+            <div class="toolbar">
+              <button type="button" class="btn btn-primary" id="dl-html">Download report (HTML)</button>
+              <button type="button" class="btn" id="dl-md">Download report (Markdown)</button>
+              <button type="button" class="btn" id="copy-summary">Copy summary</button>
+              <button type="button" class="btn" id="print-report">Print or save as PDF</button>
+            </div>
+          </div>
+        </section>
+      </div>
+    </section>
+
+    <!-- CONTRAST LAB -->
+    <section id="contrast" class="section band" aria-labelledby="contrast-title">
+      <div class="wrap">
+        <h2 id="contrast-title">Contrast lab</h2>
+        <p class="lede">Pick a text color and a background color. See the ratio against the WCAG levels, and get the closest text color that passes.</p>
+
+        <div class="lab">
+          <div class="lab-controls">
+            <div class="colorfield">
+              <label for="fg-hex">Text color</label>
+              <div class="pair">
+                <input type="color" id="fg-picker" value="#767676" aria-label="Text color picker">
+                <input type="text" id="fg-hex" value="#767676" maxlength="7" spellcheck="false" autocomplete="off" aria-describedby="lab-error">
+              </div>
+            </div>
+            <div class="colorfield">
+              <label for="bg-hex">Background color</label>
+              <div class="pair">
+                <input type="color" id="bg-picker" value="#ffffff" aria-label="Background color picker">
+                <input type="text" id="bg-hex" value="#ffffff" maxlength="7" spellcheck="false" autocomplete="off" aria-describedby="lab-error">
+              </div>
+            </div>
+            <button type="button" class="btn" id="swap-colors">Swap colors</button>
+            <p id="lab-error" class="error" role="alert" hidden></p>
+          </div>
+
+          <div class="lab-result">
+            <p class="ratio" id="ratio" aria-live="polite">–</p>
+            <ul class="levels" id="levels"></ul>
+            <p id="lab-suggest"></p>
+            <button type="button" class="btn btn-primary" id="apply-suggest" hidden>Use suggested color</button>
+          </div>
+
+          <div class="lab-preview" id="lab-preview">
+            <p class="preview-large">Large text sample, 24px</p>
+            <p>Body text sample. The five boxing wizards jump quickly, and every one of them can read this.</p>
+            <p class="preview-small">Small print sample, 14px</p>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- LEARN -->
+    <section id="learn" class="section" aria-labelledby="learn-title">
+      <div class="wrap">
+        <h2 id="learn-title">Who this helps, and what breaks for them</h2>
+        <div class="people">
+          <article>
+            <h3>People who use screen readers</h3>
+            <p>Software reads the page aloud. It needs alt text, form labels, link text that makes sense alone, and a clear heading outline.</p>
+          </article>
+          <article>
+            <h3>People who use only a keyboard</h3>
+            <p>This includes people with motor impairments and anyone with a broken wrist or trackpad. Everything must be reachable with Tab, and the focus must be visible.</p>
+          </article>
+          <article>
+            <h3>People with low vision or color-vision differences</h3>
+            <p>They need strong contrast, text that scales when zoomed, and meaning that isn’t carried by color alone.</p>
+          </article>
+          <article>
+            <h3>Everyone else, some of the time</h3>
+            <p>Phone in bright sunlight, noisy train, one hand full. Accessible design is just design that holds up in real life.</p>
+          </article>
+        </div>
+
+        <div class="kbtest">
+          <h3>Try the 60-second keyboard test on your own site</h3>
+          <ol>
+            <li>Put your mouse aside and open your page.</li>
+            <li>Press Tab repeatedly. You should always see where you are.</li>
+            <li>Press Enter on links and Space on buttons. Everything clickable should work.</li>
+            <li>Press Shift + Tab to go back. The order should follow the page from top to bottom.</li>
+          </ol>
+        </div>
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about" class="section band" aria-labelledby="about-title">
+      <div class="wrap about-grid">
+        <div>
+          <h2 id="about-title">About FairWeb AI</h2>
+          <p>The web only works if people can use it. Most accessibility tools are written for specialists. FairWeb AI is written for the developer who has never heard of WCAG and still wants to do the right thing.</p>
+          <p>Every problem comes with the same four answers: what is wrong, who it affects, how to fix it, and what it sounds like to a screen reader.</p>
+        </div>
+        <div>
+          <h3>What it checks</h3>
+          <ul class="plain-list">
+            <li><strong>Contrast.</strong> Real computed colors, including inherited backgrounds and transparency.</li>
+            <li><strong>Images.</strong> Missing, empty-by-mistake, and file-name alt text.</li>
+            <li><strong>Forms.</strong> Missing labels, placeholder-only fields, ungrouped radios.</li>
+            <li><strong>Keyboard.</strong> Click handlers on divs, removed focus outlines, bad tab order, unnamed links and buttons.</li>
+            <li><strong>Structure.</strong> Language, title, zoom, headings, landmarks, tables, frames.</li>
+          </ul>
+          <h3>Honest limits</h3>
+          <p>Automated checks find some barriers, not all. Use this as a fast first pass, then test with a keyboard and a screen reader.</p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="wrap">
+      <p><strong>FairWeb AI</strong>: a hackathon project for a more inclusive web. Built with plain HTML, CSS and JavaScript.</p>
+      <p>This site is designed to meet WCAG 2.2 AA. If you find a barrier, please tell us so we can fix it.</p>
+    </div>
+  </footer>
+
+  <script src="js/sample.js"></script>
+  <script src="js/checks.js"></script>
+  <script src="js/report.js"></script>
+  <script src="js/app.js"></script>
+</body>
+</html>
